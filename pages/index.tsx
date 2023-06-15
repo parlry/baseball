@@ -1,8 +1,14 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import useSWR from 'swr'
 
 export default function Home() {
+  const fetcher = (url: string) => fetch(url).then((res) => res.json())
+  const { data, error } = useSWR('/api/handle_script', fetcher)
+  if (error) return <div>failed to load</div>
+  if (!data) return <div>loading...</div>
+
   return (
     <div className={styles.container}>
       <Head>
